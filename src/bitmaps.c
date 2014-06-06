@@ -92,7 +92,7 @@ static void set_two_digit_string(int *str, int num);
  * Externally accessible functions
  */
 
-GSize bitmaps_get_size_num(NumberStyle n) {
+GSize bitmaps_get_size_number(NumberStyle n) {
   /* TODO: Check return value */
   GBitmap* b = bitmaps_create(&numbers[n][0]);
   return b->bounds.size;
@@ -113,7 +113,7 @@ GSize bitmaps_get_size_clock(ClockStyle style) {
 
   for (int i = 0; i < 6; ++i) {
     if (number_styles[style][i] == NONE) continue;
-    current_size = bitmaps_get_size_num(number_styles[style][i]);
+    current_size = bitmaps_get_size_number(number_styles[style][i]);
     total_size->h = MAX(total_size->h, current_size.h);
     if (total_size->w > 0) {
       total_size->w += 1 + ((i+1) % 2);
@@ -143,7 +143,7 @@ void bitmaps_draw_text(GContext *ctx, Text t, GPoint p) {
   bitmaps_draw(ctx, &texts[t], p);
 }
 
-void bitmaps_draw_num(GContext *ctx, NumberStyle n, int i, GPoint p) {
+void bitmaps_draw_number(GContext *ctx, NumberStyle n, int i, GPoint p) {
   bitmaps_draw(ctx, &numbers[n][i], p);
 }
 
@@ -158,11 +158,11 @@ void bitmaps_draw_clock(GContext *ctx, ClockStyle style, GPoint tl, struct tm *t
   int x = tl.x;
   for (int i = 0; i < 6; ++i) {
     if (number_styles[style][i] == NONE) continue;
-    GSize size = bitmaps_get_size_num(number_styles[style][i]);
+    GSize size = bitmaps_get_size_number(number_styles[style][i]);
     if (x > tl.x) {
       x += 1 + ((i+1) % 2);
     }
-    bitmaps_draw_num(ctx, number_styles[style][i], nums[i],
+    bitmaps_draw_number(ctx, number_styles[style][i], nums[i],
                      (GPoint){ .x = x, .y = tl.y + total_size.h - size.h });
     x += size.w;
   }
