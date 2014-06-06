@@ -1,0 +1,8 @@
+FlightTime
+==========
+
+FlightTime is a Pebble watchapp for pilots.
+
+The purpose is to provide useful information, including the current time,
+both in the local timezone and UTC, timers, start and landing times, and
+flight time.

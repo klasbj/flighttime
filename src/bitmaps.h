@@ -1,3 +1,4 @@
+/* Copyright (c) 2014, Klas Björkqvist, see COPYING */
 #ifndef BITMAPS_H
 #define BITMAPS_H
 

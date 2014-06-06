@@ -1,8 +1,8 @@
 {
   "uuid": "7dabb60e-4362-4b34-bf5d-aa792b8d49e8",
-  "shortName": "flighttime",
-  "longName": "flighttime",
-  "companyName": "MakeAwesomeHappen",
+  "shortName": "FlightTime",
+  "longName": "FlightTime",
+  "companyName": "Klas Björkqvist",
   "versionCode": 1,
   "versionLabel": "1.0.0",
   "watchapp": {

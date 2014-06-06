@@ -1,3 +1,4 @@
+/* Copyright (c) 2014, Klas Björkqvist, see COPYING */
 #include <pebble.h>
 #include "fullclock.h"
 #include "bitmaps.h"

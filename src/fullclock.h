@@ -1,3 +1,4 @@
+/* Copyright (c) 2014, Klas Björkqvist, see COPYING */
 #ifndef FULLCLOCK_H
 #define FULLCLOCK_H
 

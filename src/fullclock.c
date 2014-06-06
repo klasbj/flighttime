@@ -1,3 +1,4 @@
+/* Copyright (c) 2014, Klas Björkqvist, see COPYING */
 #include "fullclock.h"
 
 #include <pebble.h>

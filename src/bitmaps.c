@@ -1,3 +1,4 @@
+/* Copyright (c) 2014, Klas Björkqvist, see COPYING */
 #include "bitmaps.h"
 #include <pebble.h>
 
