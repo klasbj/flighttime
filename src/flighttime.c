@@ -3,7 +3,7 @@
 #include "bitmaps.h"
 
 static Window *window;
-static Layer *clock_layers[5];
+static Layer *clock_layers[2];
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
@@ -21,7 +21,7 @@ static void click_config_provider(void *context) {
 }
 
 static void tick(struct tm *tick_time, TimeUnits changed) {
-  for (int i = 0; i < 5; ++i) {
+  for (int i = 0; i < 2; ++i) {
     full_clock_set_time(clock_layers[i], tick_time);
   }
 }
@@ -35,12 +35,9 @@ static void window_load(Window *window) {
   time_t ts = time(NULL);
   struct tm *t = localtime(&ts);
 
-  Text clocks[5] = { LCL, UTC, FLT, 123, 124 };
-  for (int i = 0; i < 5; ++i) {
-    if (i < 2)
-      clock_layers[i] = full_clock_create(clocks[i], (GPoint){0, 10+40*i});
-    else
-      clock_layers[i] = full_clock_create(clocks[i], (GPoint){0, 10+40*2 + 20*(i-2)});
+  Text clocks[2] = { LCL, UTC };
+  for (int i = 0; i < 2; ++i) {
+    clock_layers[i] = full_clock_create((GPoint){0, 10+40*i}, clocks[i] == UTC);
     full_clock_set_time(clock_layers[i], t);
     layer_add_child(window_layer, clock_layers[i]);
   }
@@ -51,7 +48,7 @@ static void window_load(Window *window) {
 
 static void window_unload(Window *window) {
   tick_timer_service_unsubscribe();
-  for (int i = 0; i < 5; ++i) {
+  for (int i = 0; i < 2; ++i) {
     full_clock_destroy(clock_layers[i]);
   }
 }
