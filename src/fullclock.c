@@ -10,13 +10,13 @@
 
 typedef struct {
   struct tm time;
-  Texts title;
+  Text title;
   bool valid;
 } FullClockData;
 
 static void full_clock_update(Layer *l, GContext *ctx);
 
-Layer *full_clock_create(const Texts title, const GPoint r) {
+Layer *full_clock_create(const Text title, const GPoint r) {
   Layer *l = layer_create_with_data((GRect){.origin = r, .size = { WIDTH, HEIGHT }},
                                     sizeof(FullClockData));
   layer_set_update_proc(l, full_clock_update);
@@ -61,7 +61,7 @@ static void full_clock_update(Layer *l, GContext *ctx) {
 
   if (!d->valid) return;
 
-  Style s = STYLE_LARGE;
+  ClockStyle s = STYLE_LARGE;
   switch ((int)d->title) {
     case LCL:
       s = STYLE_LARGE;

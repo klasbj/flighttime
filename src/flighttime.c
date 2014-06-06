@@ -35,7 +35,7 @@ static void window_load(Window *window) {
   time_t ts = time(NULL);
   struct tm *t = localtime(&ts);
 
-  Texts clocks[5] = { LCL, UTC, FLT, 123, 124 };
+  Text clocks[5] = { LCL, UTC, FLT, 123, 124 };
   for (int i = 0; i < 5; ++i) {
     if (i < 2)
       clock_layers[i] = full_clock_create(clocks[i], (GPoint){0, 10+40*i});

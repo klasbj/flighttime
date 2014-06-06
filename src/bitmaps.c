@@ -6,9 +6,9 @@
 /*
  * Memoization structures
  */
-static GBitmap* nums_bmps[NUMS_LAST][10] = { {NULL,}, };
+static GBitmap* nums_bmps[NUMBER_LAST][10] = { {NULL,}, };
 
-static GBitmap* texts_bmps[TEXTS_LAST] = { NULL,};
+static GBitmap* texts_bmps[TEXT_LAST] = { NULL,};
 
 static struct { GSize size; bool valid; } total_sizes[STYLE_LAST] = { {{0},false}, };
 
@@ -17,7 +17,7 @@ static struct { GSize size; bool valid; } total_sizes[STYLE_LAST] = { {{0},false
  * Style settings
  */
 
-int number_styles[STYLE_LAST][6] = {
+static const int number_styles[STYLE_LAST][6] = {
   [STYLE_LARGE] = { LARGE, LARGE, LARGE, LARGE, SMALL, SMALL },
   [STYLE_LARGE_MINUTE] = { SMALL, SMALL, LARGE, LARGE, SMALL, SMALL },
   [STYLE_SMALL] = { SMALL, SMALL, SMALL, SMALL, SMALL, SMALL },
@@ -28,7 +28,7 @@ int number_styles[STYLE_LAST][6] = {
 /*
  * Resource ID mappings
  */
-static const ResourceId resid_texts[TEXTS_LAST] = {
+static const ResourceId resid_texts[TEXT_LAST] = {
     [T]     = RESOURCE_ID_IMAGE_T
   , [LCL]   = RESOURCE_ID_IMAGE_LCL
   , [UTC]   = RESOURCE_ID_IMAGE_UTC
@@ -36,8 +36,8 @@ static const ResourceId resid_texts[TEXTS_LAST] = {
 
 };
 
-static const ResourceId resid_nums[NUMS_LAST][10] = {
-  [NUMS_T] = {
+static const ResourceId resid_nums[NUMBER_LAST][10] = {
+  [NUMBER_T] = {
         [0] = RESOURCE_ID_IMAGE_S0
       , [1] = RESOURCE_ID_IMAGE_S1
       , [2] = RESOURCE_ID_IMAGE_S2
@@ -88,19 +88,19 @@ static void set_two_digit_string(int *str, int num);
  * Externally accessible functions
  */
 
-GSize bitmaps_get_size_num(Nums n) {
+GSize bitmaps_get_size_num(NumberStyle n) {
   /* TODO: Check return value */
   GBitmap* b = bitmaps_create(&nums_bmps[n][0], resid_nums[n][0]);
   return b->bounds.size;
 }
 
-GSize bitmaps_get_size_text(Texts t) {
+GSize bitmaps_get_size_text(Text t) {
   /* TODO: Check return value */
   GBitmap* b = bitmaps_create(&texts_bmps[t], resid_texts[t]);
   return b->bounds.size;
 }
 
-GSize bitmaps_get_size_clock(Style style) {
+GSize bitmaps_get_size_clock(ClockStyle style) {
   if (total_sizes[style].valid) return total_sizes[style].size;
 
   total_sizes[style].valid = true;
@@ -122,41 +122,41 @@ GSize bitmaps_get_size_clock(Style style) {
 
 void bitmaps_init() {
   /* deinit nums */
-  for (int i = 0; i < NUMS_LAST; ++i)
+  for (int i = 0; i < NUMBER_LAST; ++i)
     for (int j = 0; j < 10; ++j)
       if (nums_bmps[i][j] != NULL)
         nums_bmps[i][j] = NULL; //gbitmap_create_with_resource(resid_nums[i][j]);
 
   /* deinit texts */
-  for (int i = 0; i < TEXTS_LAST; ++i)
+  for (int i = 0; i < TEXT_LAST; ++i)
     if (texts_bmps[i] != NULL)
       texts_bmps[i] = NULL;
 }
 
 void bitmaps_deinit() {
   /* deinit nums */
-  for (int i = 0; i < NUMS_LAST; ++i)
+  for (int i = 0; i < NUMBER_LAST; ++i)
     for (int j = 0; j < 10; ++j) {
       bitmaps_destroy(nums_bmps[i][j]);
       nums_bmps[i][j] = NULL;
     }
 
   /* deinit texts */
-  for (int i = 0; i < TEXTS_LAST; ++i) {
+  for (int i = 0; i < TEXT_LAST; ++i) {
       bitmaps_destroy(texts_bmps[i]);
       texts_bmps[i] = NULL;
   }
 }
 
-void bitmaps_draw_text(GContext *ctx, Texts t, GPoint p) {
+void bitmaps_draw_text(GContext *ctx, Text t, GPoint p) {
   bitmaps_draw(ctx, &texts_bmps[t], resid_texts[t], p);
 }
 
-void bitmaps_draw_num(GContext *ctx, Nums n, int i, GPoint p) {
+void bitmaps_draw_num(GContext *ctx, NumberStyle n, int i, GPoint p) {
   bitmaps_draw(ctx, &nums_bmps[n][i], resid_nums[n][i], p);
 }
 
-void bitmaps_draw_clock(GContext *ctx, Style style, GPoint tl, struct tm *t) {
+void bitmaps_draw_clock(GContext *ctx, ClockStyle style, GPoint tl, struct tm *t) {
   int nums[6];
   GSize total_size = bitmaps_get_size_clock(style);
 

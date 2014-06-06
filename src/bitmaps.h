@@ -8,16 +8,16 @@ typedef enum {
   LCL,
   UTC,
   FLT,
-  TEXTS_LAST
-} Texts;
+  TEXT_LAST
+} Text;
 
 typedef enum {
-  NUMS_T      = 0,
+  NUMBER_T      = 0,
   SMALL,
   LARGE,
-  NUMS_LAST,
+  NUMBER_LAST,
   NONE        = -1
-} Nums;
+} NumberStyle;
 
 typedef enum {
   STYLE_LARGE,
@@ -26,15 +26,15 @@ typedef enum {
   STYLE_SMALL_HM,
   STYLE_SMALL_MS,
   STYLE_LAST
-} Style;
+} ClockStyle;
 
-extern GSize bitmaps_get_size_num(Nums n);
-extern GSize bitmaps_get_size_text(Texts t);
-extern GSize bitmaps_get_size_clock(Style s);
+extern GSize bitmaps_get_size_number(NumberStyle n);
+extern GSize bitmaps_get_size_text(Text t);
+extern GSize bitmaps_get_size_clock(ClockStyle s);
 
-extern void bitmaps_draw_text(GContext *ctx, Texts t, GPoint p);
-extern void bitmaps_draw_num(GContext *ctx, Nums n, int i, GPoint p);
-extern void bitmaps_draw_clock(GContext *ctx, Style style, GPoint tl, struct tm *t);
+extern void bitmaps_draw_text(GContext *ctx, Text t, GPoint p);
+extern void bitmaps_draw_number(GContext *ctx, NumberStyle n, int i, GPoint p);
+extern void bitmaps_draw_clock(GContext *ctx, ClockStyle style, GPoint tl, struct tm *t);
 
 extern void bitmaps_init();
 extern void bitmaps_deinit();
