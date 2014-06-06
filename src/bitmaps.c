@@ -7,26 +7,15 @@ static GBitmap* texts_bmps[TEXTS_LAST] = { NULL,};
 
 
 /*
- * Size settings
+ * Style settings
  */
-#define LARGE_HEIGHT (30)
-#define LARGE_WIDTH  (24)
-#define SMALL_HEIGHT (14)
-#define SMALL_WIDTH  (12)
 
-#define THREE_TEXT_HEIGHT (14)
-#define THREE_TEXT_WIDTH  (SMALL_WIDTH*3 + 2)
-
-
-const GSize text_sizes[TEXTS_LAST] = {
-    [T]     = { .w = SMALL_WIDTH, .h = SMALL_HEIGHT }
-  , [LCL]   = { .w = THREE_TEXT_WIDTH, .h = SMALL_HEIGHT }
-  , [UTC]   = { .w = THREE_TEXT_WIDTH, .h = SMALL_HEIGHT }
-  , [FLT]   = { .w = THREE_TEXT_WIDTH, .h = SMALL_HEIGHT }
-};
-const GSize num_sizes[NUMS_LAST] = {
-    [SMALL] = { .w = SMALL_WIDTH, .h = SMALL_HEIGHT }
-  , [LARGE] = { .w = LARGE_WIDTH, .h = LARGE_HEIGHT }
+int number_styles[STYLE_LAST][6] = {
+  [STYLE_LARGE] = { LARGE, LARGE, LARGE, LARGE, SMALL, SMALL },
+  [STYLE_LARGE_MINUTE] = { SMALL, SMALL, LARGE, LARGE, SMALL, SMALL },
+  [STYLE_SMALL] = { SMALL, SMALL, SMALL, SMALL, SMALL, SMALL },
+  [STYLE_SMALL_HM] = { SMALL, SMALL, SMALL, SMALL, NONE, NONE },
+  [STYLE_SMALL_MS] = { NONE, NONE, SMALL, SMALL, SMALL, SMALL },
 };
 
 /*
@@ -79,10 +68,47 @@ static const ResourceId resid_nums[NUMS_LAST][10] = {
   }
 };
 
-static void load_and_draw(GContext *ctx, GBitmap* *bmp, ResourceId id, GPoint p) {
+static GBitmap* load(GBitmap* *bmp, ResourceId id) {
   if (*bmp == NULL) {
     *bmp = gbitmap_create_with_resource(id);
   }
+  return *bmp;
+}
+
+GSize bitmaps_get_size_num(Nums n) {
+  /* TODO: Check return value */
+  GBitmap* b = load(&nums_bmps[n][0], resid_nums[n][0]);
+  return b->bounds.size;
+}
+
+GSize bitmaps_get_size_text(Texts t) {
+  /* TODO: Check return value */
+  GBitmap* b = load(&texts_bmps[t], resid_texts[t]);
+  return b->bounds.size;
+}
+
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
+GSize bitmaps_get_size_clock(Style style) {
+  GSize total_size = {0,0};
+  GSize current_size = {0,0};
+
+  for (int i = 0; i < 6; ++i) {
+    if (number_styles[style][i] == NONE) continue;
+    current_size = bitmaps_get_size_num(number_styles[style][i]);
+    total_size.h = MAX(total_size.h, current_size.h);
+    if (total_size.w > 0) {
+      total_size.w += 1 + ((i+1) % 2);
+    }
+    total_size.w += current_size.w;
+  }
+
+  return total_size;
+}
+
+static void load_and_draw(GContext *ctx, GBitmap* *bmp, ResourceId id, GPoint p) {
+  /* TODO: Check return value */
+  load(bmp, id);
 
   GRect bounds = (*bmp)->bounds;
 
@@ -138,13 +164,6 @@ static void set_two_digit_string(int *str, int num) {
 
 void bitmaps_draw_clock(GContext *ctx, Style style, GPoint tl, struct tm *t) {
   int nums[6];
-  int sizes[STYLE_LAST][6] = {
-    [STYLE_LARGE] = { LARGE, LARGE, LARGE, LARGE, SMALL, SMALL },
-    [STYLE_LARGE_MINUTE] = { SMALL, SMALL, LARGE, LARGE, SMALL, SMALL },
-    [STYLE_SMALL] = { SMALL, SMALL, SMALL, SMALL, SMALL, SMALL },
-    [STYLE_SMALL_HM] = { SMALL, SMALL, SMALL, SMALL, NONE, NONE },
-    [STYLE_SMALL_MS] = { NONE, NONE, SMALL, SMALL, SMALL, SMALL },
-  };
   int height[STYLE_LAST] = {
     [STYLE_LARGE] = 30,
     [STYLE_LARGE_MINUTE] = 30,
@@ -159,10 +178,12 @@ void bitmaps_draw_clock(GContext *ctx, Style style, GPoint tl, struct tm *t) {
 
   int x = tl.x;
   for (int i = 0; i < 6; ++i) {
-    if (sizes[style][i] == NONE) continue;
-    x += 1 + ((i+1)%2);
-    bitmaps_draw_num(ctx, sizes[style][i], nums[i], (GPoint){ .x = x, .y = tl.y + height[style] - num_sizes[sizes[style][i]].h });
-    x += num_sizes[sizes[style][i]].w;
+    if (number_styles[style][i] == NONE) continue;
+    if (x > tl.x) {
+      x += 1 + ((i+1) % 2);
+    }
+    bitmaps_draw_num(ctx, number_styles[style][i], nums[i], (GPoint){ .x = x, .y = tl.y + height[style] - num_sizes[number_styles[style][i]].h });
+    x += num_sizes[number_styles[style][i]].w;
   }
 
 }

@@ -41,20 +41,22 @@ void full_clock_set_time(Layer *l, const struct tm *time) {
 }
 
 static void full_clock_update(Layer *l, GContext *ctx) {
-  int text_x[STYLE_LAST] = {
+  /*int text_x[STYLE_LAST] = {
     [STYLE_LARGE] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
     [STYLE_LARGE_MINUTE] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
     [STYLE_SMALL] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
     [STYLE_SMALL_HM] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
     [STYLE_SMALL_MS] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5
-  };
+  };*/
+  /*
   int begin_x[STYLE_LAST] = {
-    [STYLE_LARGE] = 6,
+    [STYLE_LARGE] = WIDTH/2 - 3*num_sizes[LARGE].w - 3 - 1,
     [STYLE_LARGE_MINUTE] = WIDTH/2 - 2*num_sizes[SMALL].w - num_sizes[LARGE].w - 4,
     [STYLE_SMALL] = WIDTH - 9*num_sizes[SMALL].w - 5 - 2,
     [STYLE_SMALL_HM] = WIDTH - 7*num_sizes[SMALL].w - 5 - 2,
     [STYLE_SMALL_MS] = WIDTH - 7*num_sizes[SMALL].w - 5 - 2
-  };
+  };*/
+
   FullClockData *d = (FullClockData*) layer_get_data(l);
 
   if (!d->valid) return;
@@ -80,7 +82,9 @@ static void full_clock_update(Layer *l, GContext *ctx) {
       return;
   }
 
-  bitmaps_draw_clock(ctx, s, (GPoint){.x = begin_x[s], .y = 0}, &d->time);
+  GSize size = bitmaps_get_size_clock(s);
+  int begin_x = WIDTH/2 - size.w/2;
+  bitmaps_draw_clock(ctx, s, (GPoint){.x = begin_x, .y = 0}, &d->time);
 
   //bitmaps_draw_text(ctx, d->title, (GPoint){ .x = text_x[style], .y = 0 });
 }

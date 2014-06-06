@@ -28,8 +28,9 @@ typedef enum {
   STYLE_LAST
 } Style;
 
-extern const GSize text_sizes[TEXTS_LAST];
-extern const GSize num_sizes[NUMS_LAST];
+extern GSize bitmaps_get_size_num(Nums n);
+extern GSize bitmaps_get_size_text(Texts t);
+extern GSize bitmaps_get_size_clock(Style s);
 
 extern void bitmaps_draw_text(GContext *ctx, Texts t, GPoint p);
 extern void bitmaps_draw_num(GContext *ctx, Nums n, int i, GPoint p);
