@@ -64,19 +64,19 @@ static Bitmap texts[TEXT_LAST] = {
   , TEXT_ASSIGN(FLT)
 };
 
-static struct { GSize size; bool valid; } total_sizes[STYLE_LAST] = { {{0},false}, };
+static struct { GSize size; bool valid; } total_sizes[CLOCKSTYLE_LAST] = { {{0},false}, };
 
 
 /*
  * Style settings
  */
 
-static const int number_styles[STYLE_LAST][6] = {
-  [STYLE_LARGE] = { LARGE, LARGE, LARGE, LARGE, SMALL, SMALL },
-  [STYLE_LARGE_MINUTE] = { SMALL, SMALL, LARGE, LARGE, SMALL, SMALL },
-  [STYLE_SMALL] = { SMALL, SMALL, SMALL, SMALL, SMALL, SMALL },
-  [STYLE_SMALL_HM] = { SMALL, SMALL, SMALL, SMALL, NONE, NONE },
-  [STYLE_SMALL_MS] = { NONE, NONE, SMALL, SMALL, SMALL, SMALL },
+static const int number_styles[CLOCKSTYLE_LAST][6] = {
+  [CLOCK_LARGE] = { LARGE, LARGE, LARGE, LARGE, SMALL, SMALL },
+  [CLOCK_LARGE_MINUTE] = { SMALL, SMALL, LARGE, LARGE, SMALL, SMALL },
+  [CLOCK_SMALL] = { SMALL, SMALL, SMALL, SMALL, SMALL, SMALL },
+  [CLOCK_SMALL_HM] = { SMALL, SMALL, SMALL, SMALL, NONE, NONE },
+  [CLOCK_SMALL_MS] = { NONE, NONE, SMALL, SMALL, SMALL, SMALL },
 };
 
 /*

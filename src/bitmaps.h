@@ -20,12 +20,12 @@ typedef enum {
 } NumberStyle;
 
 typedef enum {
-  STYLE_LARGE,
-  STYLE_LARGE_MINUTE,
-  STYLE_SMALL,
-  STYLE_SMALL_HM,
-  STYLE_SMALL_MS,
-  STYLE_LAST
+  CLOCK_LARGE,
+  CLOCK_LARGE_MINUTE,
+  CLOCK_SMALL,
+  CLOCK_SMALL_HM,
+  CLOCK_SMALL_MS,
+  CLOCKSTYLE_LAST
 } ClockStyle;
 
 extern GSize bitmaps_get_size_number(NumberStyle n);

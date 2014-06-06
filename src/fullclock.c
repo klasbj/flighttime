@@ -41,42 +41,42 @@ void full_clock_set_time(Layer *l, const struct tm *time) {
 }
 
 static void full_clock_update(Layer *l, GContext *ctx) {
-  /*int text_x[STYLE_LAST] = {
-    [STYLE_LARGE] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
-    [STYLE_LARGE_MINUTE] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
-    [STYLE_SMALL] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
-    [STYLE_SMALL_HM] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
-    [STYLE_SMALL_MS] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5
+  /*int text_x[CLOCK_LAST] = {
+    [CLOCK_LARGE] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
+    [CLOCK_LARGE_MINUTE] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
+    [CLOCK_SMALL] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
+    [CLOCK_SMALL_HM] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5,
+    [CLOCK_SMALL_MS] = 6 + 4*(num_sizes[LARGE].w + 1) + 6 + 5
   };*/
   /*
-  int begin_x[STYLE_LAST] = {
-    [STYLE_LARGE] = WIDTH/2 - 3*num_sizes[LARGE].w - 3 - 1,
-    [STYLE_LARGE_MINUTE] = WIDTH/2 - 2*num_sizes[SMALL].w - num_sizes[LARGE].w - 4,
-    [STYLE_SMALL] = WIDTH - 9*num_sizes[SMALL].w - 5 - 2,
-    [STYLE_SMALL_HM] = WIDTH - 7*num_sizes[SMALL].w - 5 - 2,
-    [STYLE_SMALL_MS] = WIDTH - 7*num_sizes[SMALL].w - 5 - 2
+  int begin_x[CLOCK_LAST] = {
+    [CLOCK_LARGE] = WIDTH/2 - 3*num_sizes[LARGE].w - 3 - 1,
+    [CLOCK_LARGE_MINUTE] = WIDTH/2 - 2*num_sizes[SMALL].w - num_sizes[LARGE].w - 4,
+    [CLOCK_SMALL] = WIDTH - 9*num_sizes[SMALL].w - 5 - 2,
+    [CLOCK_SMALL_HM] = WIDTH - 7*num_sizes[SMALL].w - 5 - 2,
+    [CLOCK_SMALL_MS] = WIDTH - 7*num_sizes[SMALL].w - 5 - 2
   };*/
 
   FullClockData *d = (FullClockData*) layer_get_data(l);
 
   if (!d->valid) return;
 
-  ClockStyle s = STYLE_LARGE;
+  ClockStyle s = CLOCK_LARGE;
   switch ((int)d->title) {
     case LCL:
-      s = STYLE_LARGE;
+      s = CLOCK_LARGE;
       break;
     case UTC:
-      s = STYLE_LARGE_MINUTE;
+      s = CLOCK_LARGE_MINUTE;
       break;
     case FLT:
-      s = STYLE_SMALL;
+      s = CLOCK_SMALL;
       break;
     case 123:
-      s = STYLE_SMALL_HM;
+      s = CLOCK_SMALL_HM;
       break;
     case 124:
-      s = STYLE_SMALL_MS;
+      s = CLOCK_SMALL_MS;
       break;
     default:
       return;
