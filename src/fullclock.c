@@ -35,7 +35,7 @@ void full_clock_destroy(Layer *l) {
   layer_destroy(l);
 }
 
-void full_clock_set_time(Layer *l, const struct tm *time) {
+void full_clock_set_time(Layer *l, struct tm *time) {
   FullClockData *d = (FullClockData*) layer_get_data(l);
   d->time = *time;
   d->valid = true;

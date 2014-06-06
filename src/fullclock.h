@@ -8,7 +8,7 @@
 Layer *full_clock_create(const GPoint r, bool utc);
 void full_clock_destroy(Layer *l);
 
-void full_clock_set_time(Layer *l, const struct tm *time);
+void full_clock_set_time(Layer *l, struct tm *time);
 
 
 #endif /* FULLCLOCK_H */
