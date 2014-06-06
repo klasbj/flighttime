@@ -1,0 +1,138 @@
+{
+  "uuid": "7dabb60e-4362-4b34-bf5d-aa792b8d49e8",
+  "shortName": "flighttime",
+  "longName": "flighttime",
+  "companyName": "MakeAwesomeHappen",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+      {
+        "type":"png",
+        "name":"IMAGE_T",
+        "file":"images/T.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_UTC",
+        "file":"images/UTC.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_FLT",
+        "file":"images/FLT.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_LCL",
+        "file":"images/LCL.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L0",
+        "file":"images/L0.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L1",
+        "file":"images/L1.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L2",
+        "file":"images/L2.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L3",
+        "file":"images/L3.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L4",
+        "file":"images/L4.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L5",
+        "file":"images/L5.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L6",
+        "file":"images/L6.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L7",
+        "file":"images/L7.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L8",
+        "file":"images/L8.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_L9",
+        "file":"images/L9.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S0",
+        "file":"images/S0.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S1",
+        "file":"images/S1.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S2",
+        "file":"images/S2.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S3",
+        "file":"images/S3.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S4",
+        "file":"images/S4.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S5",
+        "file":"images/S5.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S6",
+        "file":"images/S6.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S7",
+        "file":"images/S7.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S8",
+        "file":"images/S8.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_S9",
+        "file":"images/S9.png"
+      }
+      ]
+  }
+}
