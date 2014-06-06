@@ -126,3 +126,43 @@ void bitmaps_draw_text(GContext *ctx, Texts t, GPoint p) {
 void bitmaps_draw_num(GContext *ctx, Nums n, int i, GPoint p) {
   load_and_draw(ctx, &nums_bmps[n][i], resid_nums[n][i], p);
 }
+
+static void set_two_digit_string(int *str, int num) {
+  if (num > 100) {
+    num %= 100;
+  }
+
+  str[0] = num/10;
+  str[1] = num%10;
+}
+
+void bitmaps_draw_clock(GContext *ctx, Style style, GPoint tl, struct tm *t) {
+  int nums[6];
+  int sizes[STYLE_LAST][6] = {
+    [STYLE_LARGE] = { LARGE, LARGE, LARGE, LARGE, SMALL, SMALL },
+    [STYLE_LARGE_MINUTE] = { SMALL, SMALL, LARGE, LARGE, SMALL, SMALL },
+    [STYLE_SMALL] = { SMALL, SMALL, SMALL, SMALL, SMALL, SMALL },
+    [STYLE_SMALL_HM] = { SMALL, SMALL, SMALL, SMALL, NONE, NONE },
+    [STYLE_SMALL_MS] = { NONE, NONE, SMALL, SMALL, SMALL, SMALL },
+  };
+  int height[STYLE_LAST] = {
+    [STYLE_LARGE] = 30,
+    [STYLE_LARGE_MINUTE] = 30,
+    [STYLE_SMALL] = 14,
+    [STYLE_SMALL_HM] = 14,
+    [STYLE_SMALL_MS] = 14
+  };
+
+  set_two_digit_string(&nums[0], t->tm_hour);
+  set_two_digit_string(&nums[2], t->tm_min);
+  set_two_digit_string(&nums[4], t->tm_sec);
+
+  int x = tl.x;
+  for (int i = 0; i < 6; ++i) {
+    if (sizes[style][i] == NONE) continue;
+    x += 1 + ((i+1)%2);
+    bitmaps_draw_num(ctx, sizes[style][i], nums[i], (GPoint){ .x = x, .y = tl.y + height[style] - num_sizes[sizes[style][i]].h });
+    x += num_sizes[sizes[style][i]].w;
+  }
+
+}
