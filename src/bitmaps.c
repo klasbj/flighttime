@@ -6,9 +6,63 @@
 /*
  * Memoization structures
  */
-static GBitmap* nums_bmps[NUMBER_LAST][10] = { {NULL,}, };
 
-static GBitmap* texts_bmps[TEXT_LAST] = { NULL,};
+typedef struct {
+  GBitmap *bmp;
+  ResourceId id;
+} Bitmap;
+
+#define NUMBER_ASSIGN(Num,Size) \
+  [Num] = { .bmp = NULL, .id = RESOURCE_ID_IMAGE_ ## Size ## Num }
+
+static Bitmap numbers[NUMBER_LAST][10] = {
+  [NUMBER_T] = {
+      NUMBER_ASSIGN(0, S)
+    , NUMBER_ASSIGN(1, S)
+    , NUMBER_ASSIGN(2, S)
+    , NUMBER_ASSIGN(3, S)
+    , NUMBER_ASSIGN(4, S)
+    , NUMBER_ASSIGN(5, S)
+    , NUMBER_ASSIGN(6, S)
+    , NUMBER_ASSIGN(7, S)
+    , NUMBER_ASSIGN(8, S)
+    , NUMBER_ASSIGN(9, S)
+  },
+  [SMALL] = {
+      NUMBER_ASSIGN(0, S)
+    , NUMBER_ASSIGN(1, S)
+    , NUMBER_ASSIGN(2, S)
+    , NUMBER_ASSIGN(3, S)
+    , NUMBER_ASSIGN(4, S)
+    , NUMBER_ASSIGN(5, S)
+    , NUMBER_ASSIGN(6, S)
+    , NUMBER_ASSIGN(7, S)
+    , NUMBER_ASSIGN(8, S)
+    , NUMBER_ASSIGN(9, S)
+  },
+  [LARGE] = {
+      NUMBER_ASSIGN(0, L)
+    , NUMBER_ASSIGN(1, L)
+    , NUMBER_ASSIGN(2, L)
+    , NUMBER_ASSIGN(3, L)
+    , NUMBER_ASSIGN(4, L)
+    , NUMBER_ASSIGN(5, L)
+    , NUMBER_ASSIGN(6, L)
+    , NUMBER_ASSIGN(7, L)
+    , NUMBER_ASSIGN(8, L)
+    , NUMBER_ASSIGN(9, L)
+  }
+};
+
+#define TEXT_ASSIGN(Text) \
+  [Text] = { .bmp = NULL, .id = RESOURCE_ID_IMAGE_ ## Text }
+
+static Bitmap texts[TEXT_LAST] = {
+    TEXT_ASSIGN(T)
+  , TEXT_ASSIGN(LCL)
+  , TEXT_ASSIGN(UTC)
+  , TEXT_ASSIGN(FLT)
+};
 
 static struct { GSize size; bool valid; } total_sizes[STYLE_LAST] = { {{0},false}, };
 
@@ -26,62 +80,12 @@ static const int number_styles[STYLE_LAST][6] = {
 };
 
 /*
- * Resource ID mappings
- */
-static const ResourceId resid_texts[TEXT_LAST] = {
-    [T]     = RESOURCE_ID_IMAGE_T
-  , [LCL]   = RESOURCE_ID_IMAGE_LCL
-  , [UTC]   = RESOURCE_ID_IMAGE_UTC
-  , [FLT]   = RESOURCE_ID_IMAGE_FLT
-
-};
-
-static const ResourceId resid_nums[NUMBER_LAST][10] = {
-  [NUMBER_T] = {
-        [0] = RESOURCE_ID_IMAGE_S0
-      , [1] = RESOURCE_ID_IMAGE_S1
-      , [2] = RESOURCE_ID_IMAGE_S2
-      , [3] = RESOURCE_ID_IMAGE_S3
-      , [4] = RESOURCE_ID_IMAGE_S4
-      , [5] = RESOURCE_ID_IMAGE_S5
-      , [6] = RESOURCE_ID_IMAGE_S6
-      , [7] = RESOURCE_ID_IMAGE_S7
-      , [8] = RESOURCE_ID_IMAGE_S8
-      , [9] = RESOURCE_ID_IMAGE_S9
-  },
-  [SMALL] = {
-        [0] = RESOURCE_ID_IMAGE_S0
-      , [1] = RESOURCE_ID_IMAGE_S1
-      , [2] = RESOURCE_ID_IMAGE_S2
-      , [3] = RESOURCE_ID_IMAGE_S3
-      , [4] = RESOURCE_ID_IMAGE_S4
-      , [5] = RESOURCE_ID_IMAGE_S5
-      , [6] = RESOURCE_ID_IMAGE_S6
-      , [7] = RESOURCE_ID_IMAGE_S7
-      , [8] = RESOURCE_ID_IMAGE_S8
-      , [9] = RESOURCE_ID_IMAGE_S9
-  },
-  [LARGE] = {
-        [0] = RESOURCE_ID_IMAGE_L0
-      , [1] = RESOURCE_ID_IMAGE_L1
-      , [2] = RESOURCE_ID_IMAGE_L2
-      , [3] = RESOURCE_ID_IMAGE_L3
-      , [4] = RESOURCE_ID_IMAGE_L4
-      , [5] = RESOURCE_ID_IMAGE_L5
-      , [6] = RESOURCE_ID_IMAGE_L6
-      , [7] = RESOURCE_ID_IMAGE_L7
-      , [8] = RESOURCE_ID_IMAGE_L8
-      , [9] = RESOURCE_ID_IMAGE_L9
-  }
-};
-
-/*
  * Helper functions
  */
 
-static GBitmap* bitmaps_create(GBitmap* *bmp, ResourceId id);
-static void bitmaps_destroy(GBitmap *bmp);
-static void bitmaps_draw(GContext *ctx, GBitmap* *bmp, ResourceId id, GPoint p);
+static GBitmap* bitmaps_create(Bitmap *bmp);
+static void bitmaps_destroy(Bitmap *b);
+static void bitmaps_draw(GContext *ctx, Bitmap *b, GPoint p);
 static void set_two_digit_string(int *str, int num);
 
 /*
@@ -90,13 +94,13 @@ static void set_two_digit_string(int *str, int num);
 
 GSize bitmaps_get_size_num(NumberStyle n) {
   /* TODO: Check return value */
-  GBitmap* b = bitmaps_create(&nums_bmps[n][0], resid_nums[n][0]);
+  GBitmap* b = bitmaps_create(&numbers[n][0]);
   return b->bounds.size;
 }
 
 GSize bitmaps_get_size_text(Text t) {
   /* TODO: Check return value */
-  GBitmap* b = bitmaps_create(&texts_bmps[t], resid_texts[t]);
+  GBitmap* b = bitmaps_create(&texts[t]);
   return b->bounds.size;
 }
 
@@ -121,39 +125,26 @@ GSize bitmaps_get_size_clock(ClockStyle style) {
 }
 
 void bitmaps_init() {
-  /* deinit nums */
-  for (int i = 0; i < NUMBER_LAST; ++i)
-    for (int j = 0; j < 10; ++j)
-      if (nums_bmps[i][j] != NULL)
-        nums_bmps[i][j] = NULL; //gbitmap_create_with_resource(resid_nums[i][j]);
-
-  /* deinit texts */
-  for (int i = 0; i < TEXT_LAST; ++i)
-    if (texts_bmps[i] != NULL)
-      texts_bmps[i] = NULL;
+  /* We don't actually have anything to init, do we? */
 }
 
 void bitmaps_deinit() {
   /* deinit nums */
   for (int i = 0; i < NUMBER_LAST; ++i)
-    for (int j = 0; j < 10; ++j) {
-      bitmaps_destroy(nums_bmps[i][j]);
-      nums_bmps[i][j] = NULL;
-    }
+    for (int j = 0; j < 10; ++j)
+      bitmaps_destroy(&numbers[i][j]);
 
   /* deinit texts */
-  for (int i = 0; i < TEXT_LAST; ++i) {
-      bitmaps_destroy(texts_bmps[i]);
-      texts_bmps[i] = NULL;
-  }
+  for (int i = 0; i < TEXT_LAST; ++i)
+      bitmaps_destroy(&texts[i]);
 }
 
 void bitmaps_draw_text(GContext *ctx, Text t, GPoint p) {
-  bitmaps_draw(ctx, &texts_bmps[t], resid_texts[t], p);
+  bitmaps_draw(ctx, &texts[t], p);
 }
 
 void bitmaps_draw_num(GContext *ctx, NumberStyle n, int i, GPoint p) {
-  bitmaps_draw(ctx, &nums_bmps[n][i], resid_nums[n][i], p);
+  bitmaps_draw(ctx, &numbers[n][i], p);
 }
 
 void bitmaps_draw_clock(GContext *ctx, ClockStyle style, GPoint tl, struct tm *t) {
@@ -183,26 +174,27 @@ void bitmaps_draw_clock(GContext *ctx, ClockStyle style, GPoint tl, struct tm *t
  * Helper function implementations
  */
 
-static GBitmap* bitmaps_create(GBitmap* *bmp, ResourceId id) {
-  if (*bmp == NULL) {
-    *bmp = gbitmap_create_with_resource(id);
+static GBitmap* bitmaps_create(Bitmap *b) {
+  if (b->bmp == NULL) {
+    b->bmp = gbitmap_create_with_resource(b->id);
   }
-  return *bmp;
+  return b->bmp;
 }
 
-static void bitmaps_destroy(GBitmap *bmp) {
-  if (bmp != NULL) {
-    gbitmap_destroy(bmp);
+static void bitmaps_destroy(Bitmap *b) {
+  if (b->bmp != NULL) {
+    gbitmap_destroy(b->bmp);
+    b->bmp = NULL;
   }
 }
 
-static void bitmaps_draw(GContext *ctx, GBitmap* *bmp, ResourceId id, GPoint p) {
+static void bitmaps_draw(GContext *ctx, Bitmap *b, GPoint p) {
   /* TODO: Check return value */
-  GBitmap* b = bitmaps_create(bmp, id);
+  GBitmap* bmp = bitmaps_create(b);
 
-  GRect bounds = b->bounds;
+  GRect bounds = bmp->bounds;
 
-  graphics_draw_bitmap_in_rect(ctx, b, (GRect) { .origin = p, .size = bounds.size });
+  graphics_draw_bitmap_in_rect(ctx, bmp, (GRect) { .origin = p, .size = bounds.size });
 }
 
 static void set_two_digit_string(int *str, int num) {
