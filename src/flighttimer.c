@@ -130,22 +130,22 @@ static void flighttimer_update(Layer *l, GContext *ctx) {
   /* display landing time */
   if (d->landing != 0) {
     draw_time(ctx, d->landing,
-              (GPoint){.x = WIDTH - 6 - bitmaps_get_size_clock(CLOCK_SMALL_MS).w, .y = 0 });
+              (GPoint){.x = WIDTH - LABEL_DIST - bitmaps_get_size_clock(CLOCK_SMALL_MS).w, .y = 0 });
   }
 
   graphics_context_set_stroke_color(ctx, GColorWhite);
   GPoint p0 = { .x = clock_size.w/2, .y = clock_size.h + 2 };
-  GPoint p1 = { .x = clock_size.w + 6, .y = p0.y };
+  GPoint p1 = { .x = clock_size.w + LABEL_DIST, .y = p0.y };
   graphics_draw_line(ctx, p0, p1);
   p0 = p1;
-  p1.x += 10;
+  p1.x += clock_size.h/2;
   p1.y = clock_size.h/2;
   graphics_draw_line(ctx, p0, p1);
   p0 = p1;
-  p1.x = WIDTH - 6 - bitmaps_get_size_clock(CLOCK_SMALL_MS).w - 10;
-  graphics_draw_line(ctx, p0, p1);
+  p1.x = WIDTH - LABEL_DIST - clock_size.w - clock_size.h/2;
+  //graphics_draw_line(ctx, p0, p1);
   p0 = p1;
-  p1.x += 10;
+  p1.x += clock_size.h/2;
   p1.y = clock_size.h + 2;
   graphics_draw_line(ctx, p0, p1);
   p0 = p1;
