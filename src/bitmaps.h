@@ -6,6 +6,7 @@
 
 typedef enum {
   T           = 0,
+  Z,
   LCL,
   UTC,
   FLT,

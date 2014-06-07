@@ -18,16 +18,16 @@ typedef struct {
 
 static Bitmap numbers[NUMBER_LAST][10] = {
   [NUMBER_T] = {
-      NUMBER_ASSIGN(0, S)
-    , NUMBER_ASSIGN(1, S)
-    , NUMBER_ASSIGN(2, S)
-    , NUMBER_ASSIGN(3, S)
-    , NUMBER_ASSIGN(4, S)
-    , NUMBER_ASSIGN(5, S)
-    , NUMBER_ASSIGN(6, S)
-    , NUMBER_ASSIGN(7, S)
-    , NUMBER_ASSIGN(8, S)
-    , NUMBER_ASSIGN(9, S)
+      NUMBER_ASSIGN(0, T)
+    , NUMBER_ASSIGN(1, T)
+    , NUMBER_ASSIGN(2, T)
+    , NUMBER_ASSIGN(3, T)
+    , NUMBER_ASSIGN(4, T)
+    , NUMBER_ASSIGN(5, T)
+    , NUMBER_ASSIGN(6, T)
+    , NUMBER_ASSIGN(7, T)
+    , NUMBER_ASSIGN(8, T)
+    , NUMBER_ASSIGN(9, T)
   },
   [SMALL] = {
       NUMBER_ASSIGN(0, S)
@@ -60,6 +60,7 @@ static Bitmap numbers[NUMBER_LAST][10] = {
 
 static Bitmap texts[TEXT_LAST] = {
     TEXT_ASSIGN(T)
+  , TEXT_ASSIGN(Z)
   , TEXT_ASSIGN(LCL)
   , TEXT_ASSIGN(UTC)
   , TEXT_ASSIGN(FLT)

@@ -5,11 +5,11 @@
 #include "flighttimer.h"
 #include "bitmaps.h"
 
-#define N_CLOCKS (4)
+#define N_CLOCKS (5)
 
 static Window *window;
 static Layer *clock_layers[N_CLOCKS];
-Text clocks[N_CLOCKS] = { LCL, UTC, FLT,  T };
+Text clocks[N_CLOCKS] = { LCL, UTC, FLT,  T, T };
 typedef void (*ClockTimeSetter)(Layer *l, struct tm *t);
 typedef void (*ClockDestroyer)(Layer *l);
 
@@ -17,6 +17,7 @@ ClockTimeSetter setters[N_CLOCKS] = {
   &full_clock_set_time,
   &full_clock_set_time,
   &flighttimer_set_time,
+  &elapsed_set_time,
   &elapsed_set_time
 };
 
@@ -24,7 +25,16 @@ ClockDestroyer destroyers[N_CLOCKS] = {
   &full_clock_destroy,
   &full_clock_destroy,
   &flighttimer_destroy,
+  &elapsed_destroy,
   &elapsed_destroy
+};
+
+GPoint locations[N_CLOCKS] = {
+  { 0, 10 },
+  { 0, 45 },
+  { 0, 70 },
+  { 0, 120 },
+  { 0, 140 }
 };
 
 
@@ -41,11 +51,11 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void down_long_click_handler(ClickRecognizerRef recognizer, void *context) {
-  elapsed_reset(clock_layers[3]);
+  elapsed_reset(clock_layers[4]);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  elapsed_start_stop(clock_layers[3]);
+  elapsed_start_stop(clock_layers[4]);
 }
 
 static void click_config_provider(void *context) {
@@ -76,15 +86,15 @@ static void window_load(Window *window) {
     switch (clocks[i]) {
       case LCL:
       case UTC:
-        clock_layers[i] = full_clock_create((GPoint){0, 10+40*i}, clocks[i] == UTC);
+        clock_layers[i] = full_clock_create(locations[i], clocks[i] == UTC);
         full_clock_set_time(clock_layers[i], t);
         break;
       case FLT:
-        clock_layers[i] = flighttimer_create((GPoint){0, 10+40*i});
+        clock_layers[i] = flighttimer_create(locations[i]);
         flighttimer_set_time(clock_layers[i], t);
         break;
       case T:
-        clock_layers[i] = elapsed_create((GPoint){0, 10+40*i}, ++elapsed_ident);
+        clock_layers[i] = elapsed_create(locations[i], ++elapsed_ident);
         elapsed_set_time(clock_layers[i], t);
         break;
       default:

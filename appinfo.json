@@ -15,6 +15,11 @@
     "media": [
       {
         "type":"png",
+        "name":"IMAGE_Z",
+        "file":"images/Z.png"
+      },
+      {
+        "type":"png",
         "name":"IMAGE_T",
         "file":"images/T.png"
       },
@@ -32,6 +37,56 @@
         "type":"png",
         "name":"IMAGE_LCL",
         "file":"images/LCL.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T0",
+        "file":"images/T0.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T1",
+        "file":"images/T1.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T2",
+        "file":"images/T2.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T3",
+        "file":"images/T3.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T4",
+        "file":"images/T4.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T5",
+        "file":"images/T5.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T6",
+        "file":"images/T6.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T7",
+        "file":"images/T7.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T8",
+        "file":"images/T8.png"
+      },
+      {
+        "type":"png",
+        "name":"IMAGE_T9",
+        "file":"images/T9.png"
       },
       {
         "type":"png",

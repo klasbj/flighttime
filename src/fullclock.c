@@ -48,21 +48,23 @@ void full_clock_set_time(Layer *l, struct tm *time) {
 }
 
 static void full_clock_update(Layer *l, GContext *ctx) {
-#define CLOCK_LABEL_DIST (6)
+#define CLOCK_LABEL_DIST (2)
   FullClockData *d = (FullClockData*) layer_get_data(l);
   if (!d->valid) return;
 
   ClockStyle s = d->utc ? CLOCK_SMALL_HM : CLOCK_LARGE;
+  GSize z_size = bitmaps_get_size_text(Z);
   GSize clock_size = bitmaps_get_size_clock(s);
   int width = clock_size.w;
   if (d->utc) {
-    width += CLOCK_LABEL_DIST + bitmaps_get_size_text(UTC).w;
+    width += CLOCK_LABEL_DIST + z_size.w;
   }
 
   int begin_x = WIDTH/2 - width/2;
   bitmaps_draw_clock(ctx, s, (GPoint){.x = begin_x, .y = 0}, &d->time);
 
   if (d->utc) {
-    bitmaps_draw_text(ctx, UTC, (GPoint){ .x = begin_x + clock_size.w + CLOCK_LABEL_DIST, .y = 0 });
+    bitmaps_draw_text(ctx, Z, (GPoint){ .x = begin_x + clock_size.w + CLOCK_LABEL_DIST,
+                                        .y = clock_size.h - z_size.h });
   }
 }
