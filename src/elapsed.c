@@ -102,14 +102,14 @@ static void elapsed_update(Layer *l, GContext *ctx) {
     .tm_sec   = diff % 60
   };
 
-  int width = ident_t_size.w + 1 +
-              ident_n_size.w + IDENT_LABEL_DIST +
-              clock_size.w;
-  int x = WIDTH/2 - width/2;
+  clock_size = bitmaps_get_size_clock(tm_diff.tm_hour > 0 ? CLOCK_SMALL : CLOCK_SMALL_MS);
+  int width = bitmaps_get_size_clock(CLOCK_SMALL).w;
+  int right_edge = WIDTH/2 + width/2;
+  int x = right_edge - clock_size.w - IDENT_LABEL_DIST - ident_t_size.w - 1 - ident_n_size.w;
 
   bitmaps_draw_text(ctx, T, (GPoint){.x = x, .y = 0});
   x += ident_t_size.w + 1;
   bitmaps_draw_number(ctx, NUMBER_T, d->ident % 10, (GPoint){.x = x, .y = 0});
   x += ident_n_size.w + IDENT_LABEL_DIST;
-  bitmaps_draw_clock(ctx, tm_diff.tm_hour > 0 ? CLOCK_SMALL_HM : CLOCK_SMALL_MS, (GPoint){.x = x, .y = 0}, &tm_diff);
+  bitmaps_draw_clock(ctx, tm_diff.tm_hour > 0 ? CLOCK_SMALL : CLOCK_SMALL_MS, (GPoint){.x = x, .y = 0}, &tm_diff);
 }

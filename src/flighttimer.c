@@ -170,12 +170,15 @@ static void flighttimer_update(Layer *l, GContext *ctx) {
     .tm_sec   = diff % 60
   };
 
-  int width = flt_size.w + LABEL_DIST +
-              clock_size.w;
-  GPoint p = {.x = WIDTH/2 - width/2, .y = 2*clock_size.h + 5 - flt_size.h };
+  clock_size = bitmaps_get_size_clock(tm_diff.tm_hour > 0 ? CLOCK_SMALL : CLOCK_SMALL_MS);
+  int width = bitmaps_get_size_clock(CLOCK_SMALL).w;
+  int right_edge = WIDTH/2 + width/2;
+  int left_edge = right_edge - clock_size.w - LABEL_DIST - flt_size.w;
 
+  GPoint p = {.x = left_edge, .y = 2*clock_size.h + 5 - flt_size.h };
   bitmaps_draw_text(ctx, FLT, p);
-  p.x += flt_size.w + LABEL_DIST;
+
+  p.x = right_edge - clock_size.w;
   p.y += flt_size.h - clock_size.h;
-  bitmaps_draw_clock(ctx, tm_diff.tm_hour > 0 ? CLOCK_SMALL_HM : CLOCK_SMALL_MS, p, &tm_diff);
+  bitmaps_draw_clock(ctx, tm_diff.tm_hour > 0 ? CLOCK_SMALL : CLOCK_SMALL_MS, p, &tm_diff);
 }
