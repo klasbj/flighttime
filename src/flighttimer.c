@@ -111,8 +111,7 @@ void flighttimer_reset(Layer *l) {
 
 static void draw_time(GContext *ctx, time_t t, GPoint p) {
   struct tm *tt = localtime(&t);
-  bitmaps_draw_clock(ctx, tt->tm_hour > 0 ? CLOCK_SMALL_HM : CLOCK_SMALL_MS,
-                     p, tt);
+  bitmaps_draw_clock(ctx, CLOCK_SMALL_HM, p, tt);
 }
 
 static void flighttimer_update(Layer *l, GContext *ctx) {
